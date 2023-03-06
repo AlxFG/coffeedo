@@ -1,3 +1,3 @@
 #include <stdio.h>
 
-void tokenise(FILE *a);
+int tokenise(FILE *a);
