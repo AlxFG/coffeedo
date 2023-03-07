@@ -18,62 +18,51 @@ void list_output(struct Node *node);
 void list_add(struct Node *node, char **string);
 void list_addheader(FILE *input, struct Node *node);
 void str_null(char *string);
-void str_newline(FILE *input, char **string);
+char *str_process(FILE *input);
 
 int
 tokenise(FILE *input)
 {
 	struct Node *commands = calloc(1, sizeof(struct Node));
-	char *buffer = calloc(1024, sizeof(char));
 	size_t strsize;
 
-	if (!(commands)) {
-		goto ERROR;
-	}
-	if (!(buffer)) {
-		goto ERROR;
-	}
-
 	list_addheader(input, commands);
-
-	/*
-	str_newline(input, &buffer);
+    char *buffer = str_process(input);
 	strsize = strlen(buffer);
-
 	str_null(buffer);
-	list_init(&header, commands);
 
 	for (int j = 0; j != (strsize - 1); j++) {
 		if (buffer[j] == '\0') {
 			char *tmp = &buffer[j + 1];
-			list_add(&tmp, commands);
+			list_add(commands, &tmp);
 		}
 	}
-*/
 	list_output(commands);
 	list_destroy(commands);
 	free(buffer);
-	ERROR: return 1;
 	return 0;
 }
 
-void
-str_newline(FILE *input, char **string)
+char *
+str_process(FILE *input)
 {
+	char *buffer = calloc(1024, sizeof(char));
 	char curr, prev;
 	int i;
 	for (i = 0; (curr = fgetc(input)) != EOF; i++) {
 		if (curr != '\n') {
-			*string[i] = curr;
+			buffer[i] = curr;
 		} else if (prev != '\n' && i != 0) {
-			*string[i] = ' ';
+			buffer[i] = ' ';
 		} else {
 			i--;
 		}
 		prev = curr;
 	}
-	*string[i] = '\0';
+	buffer[i] = '\0';
+    return buffer;
 }
+
 void
 str_null(char *string)
 {
