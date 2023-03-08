@@ -19,28 +19,36 @@ void list_add(struct Node *node, char **string);
 void list_addheader(FILE *input, struct Node *node);
 void str_null(char *string);
 char *str_process(FILE *input);
+void str_parselist(struct Node *node,  char *string, size_t strsize);
 
 int
 tokenise(FILE *input)
 {
 	struct Node *commands = calloc(1, sizeof(struct Node));
+    char *buffer = NULL;
 	size_t strsize;
+    char *test = "test";
 
 	list_addheader(input, commands);
-    char *buffer = str_process(input);
+    buffer = str_process(input);
 	strsize = strlen(buffer);
 	str_null(buffer);
-
-	for (int j = 0; j != (strsize - 1); j++) {
-		if (buffer[j] == '\0') {
-			char *tmp = &buffer[j + 1];
-			list_add(commands, &tmp);
-		}
-	}
+    str_parselist(commands, buffer, strsize);
 	list_output(commands);
 	list_destroy(commands);
 	free(buffer);
 	return 0;
+}
+
+void
+str_parselist(struct Node *node,  char *string, size_t strsize)
+{
+	for (int i = 0; i != (strsize - 1); i++) {
+		if (string[i] == '\0') {
+			char *tmp = &string[i + 1];
+			list_add(node, &tmp);
+		}
+	}
 }
 
 char *
@@ -48,6 +56,7 @@ str_process(FILE *input)
 {
 	char *buffer = calloc(1024, sizeof(char));
 	char curr, prev;
+    curr = prev = '\0';
 	int i;
 	for (i = 0; (curr = fgetc(input)) != EOF; i++) {
 		if (curr != '\n') {
@@ -77,7 +86,7 @@ str_null(char *string)
 void
 list_init(struct Node *node, char **string)
 {
-	node->data = calloc(strlen(*string), sizeof(char));
+	node->data = calloc(strlen(*string) + 1, sizeof(char));
 	node->next = NULL;
 	strcpy(node->data, *string);
 }
@@ -93,7 +102,7 @@ list_add(struct Node *node, char **string)
 
 	if (node->next == NULL) {
 		node->next = calloc(1, sizeof(struct Node));
-		node->next->data = calloc(strlen(*string), sizeof(char));
+		node->next->data = calloc(strlen(*string) + 1, sizeof(char));
 		node->next->next = NULL;
 		strcpy(node->next->data, *string);
 	}
