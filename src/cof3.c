@@ -22,20 +22,16 @@ char *str_process(FILE *input);
 void str_parselist(struct Node *node,  char *string, size_t strsize);
 
 int
-tokenise(FILE *input)
+cof3_parse(FILE *input, struct Node *cof3list)
 {
-	struct Node *commands = calloc(1, sizeof(struct Node));
-    char *buffer = NULL;
+	char *buffer = NULL;
 	size_t strsize;
-    char *test = "test";
 
-	list_addheader(input, commands);
-    buffer = str_process(input);
+	list_addheader(input, cof3list);
+	buffer = str_process(input);
 	strsize = strlen(buffer);
 	str_null(buffer);
-    str_parselist(commands, buffer, strsize);
-	list_output(commands);
-	list_destroy(commands);
+	str_parselist(cof3list, buffer, strsize);
 	free(buffer);
 	return 0;
 }

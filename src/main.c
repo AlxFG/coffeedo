@@ -27,7 +27,12 @@ main(int argc, char **argv)
 		return 1;
 	}
 	char c;
-	tokenise(coffee_config);
+
+	struct Node *commands = calloc(1, sizeof(struct Node));
+
+	cof3_parse(coffee_config, commands);
+	list_output(commands);
+	list_destroy(commands);
 
 	fclose(coffee_config);
 	return 0;
