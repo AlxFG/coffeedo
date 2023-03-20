@@ -41,7 +41,10 @@ void
 str_parselist(struct Node *node,  char *string, size_t strsize)
 {
 	for (int i = 0; i != (strsize - 1); i++) {
-		if (string[i] == '\0') {
+        if (i == 0) {
+            list_add(node, &string);
+
+        } else if (string[i] == '\0') {
 			char *tmp = &string[i + 1];
 			list_add(node, &tmp);
 		}

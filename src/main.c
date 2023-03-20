@@ -37,7 +37,7 @@ main(int argc, char **argv)
 	}
 
 	cof3_parse(coffee_config, commands);
-//	list_output(commands);
+	list_output(commands);
     command_parse(commands, 500);
 	list_destroy(commands);
 	fclose(coffee_config);
