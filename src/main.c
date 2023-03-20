@@ -22,18 +22,22 @@ main(int argc, char **argv)
 	}
 
 	FILE *coffee_config = fopen(input, "r");
+
 	if (coffee_config == NULL) {
 		fprintf(stderr, "File could not be opened\n");
 		return 1;
 	}
-	char c;
 
 	struct Node *commands = calloc(1, sizeof(struct Node));
+
+	if (commands == NULL) {
+		fprintf(stderr, "Failed to allocate memeory\n");
+		return 1;
+	}
 
 	cof3_parse(coffee_config, commands);
 	list_output(commands);
 	list_destroy(commands);
-
 	fclose(coffee_config);
 	return 0;
 }

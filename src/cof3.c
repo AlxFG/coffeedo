@@ -20,6 +20,7 @@ void list_addheader(FILE *input, struct Node *node);
 void str_null(char *string);
 char *str_process(FILE *input);
 void str_parselist(struct Node *node,  char *string, size_t strsize);
+void list_increment(struct Node **node);
 
 int
 cof3_parse(FILE *input, struct Node *cof3list)
@@ -137,3 +138,10 @@ list_addheader(FILE *input, struct Node *node)
 	list_init(node, &header);
 	free(header);
 }
+
+void
+list_increment(struct Node **node)
+{
+	*node = (*node)->next;
+}
+
