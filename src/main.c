@@ -6,6 +6,7 @@
 #include "cof3.h"
 
 int getargs(int argc, char **argv, char **input);
+int command_parse(struct Node *node, int volume);
 
 int
 main(int argc, char **argv)
@@ -36,7 +37,8 @@ main(int argc, char **argv)
 	}
 
 	cof3_parse(coffee_config, commands);
-	list_output(commands);
+//	list_output(commands);
+    command_parse(commands, 500);
 	list_destroy(commands);
 	fclose(coffee_config);
 	return 0;
@@ -62,4 +64,18 @@ getargs(int argc, char **argv, char **input)
 
 	*input = argv[optind];
 	return 0;
+}
+
+int
+command_parse(struct Node *node, int volume)
+{
+    struct Node **head = &node;
+    while (*head != NULL) {
+        if (strcmp((*head)->data, "*Wait") == 0) {
+            list_increment(head);
+            printf("Wait %i seconds\n", atoi((*head)->data));
+        }
+        list_increment(head);
+    }
+    return 0;
 }
