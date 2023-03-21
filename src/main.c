@@ -39,7 +39,7 @@ main(int argc, char **argv)
 	}
 
 	cof3_parse(coffee_config, commands);
-    command_parse(commands, 500);
+    command_parse(commands, 250);
 	list_destroy(commands);
 	fclose(coffee_config);
 	return 0;
@@ -67,6 +67,11 @@ getargs(int argc, char **argv, char **input)
 	return 0;
 }
 
+
+/*
+ * takes in linked list and volume of coffee and prints out recipe according to
+ * volume give to it
+ */
 int
 command_parse(struct Node *node, int volume)
 {

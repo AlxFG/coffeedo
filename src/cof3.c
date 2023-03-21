@@ -22,6 +22,10 @@ char *str_process(FILE *input);
 void str_parselist(struct Node *node,  char *string, size_t strsize);
 void list_increment(struct Node **node);
 
+/*
+ * takes a file pointer and pointer to a struct to create a linked
+ * list of strings
+ */
 int
 cof3_parse(FILE *input, struct Node *cof3list)
 {
@@ -37,6 +41,9 @@ cof3_parse(FILE *input, struct Node *cof3list)
 	return 0;
 }
 
+/*
+ * iterates through string to add them into linked list
+ */
 void
 str_parselist(struct Node *node,  char *string, size_t strsize)
 {
@@ -49,6 +56,9 @@ str_parselist(struct Node *node,  char *string, size_t strsize)
 	}
 }
 
+/*
+ * reads from file pointer then adds them to a buffer
+ */
 char *
 str_process(FILE *input)
 {
@@ -70,6 +80,9 @@ str_process(FILE *input)
     return buffer;
 }
 
+/*
+ * replace spaces with null terminators to create multiple strings
+ */
 void
 str_null(char *string)
 {
@@ -81,6 +94,9 @@ str_null(char *string)
 	return;
 }
 
+/*
+ * adds first element to linked list
+ */
 void
 list_init(struct Node *node, char **string)
 {
@@ -130,6 +146,9 @@ list_output(struct Node *node)
 	return;
 }
 
+/*
+ * adds header to linked list
+ */
 void
 list_addheader(FILE *input, struct Node *node)
 {
@@ -140,6 +159,9 @@ list_addheader(FILE *input, struct Node *node)
 	free(header);
 }
 
+/*
+ * increments an indirect pointer to linked list
+ */
 void
 list_increment(struct Node **node)
 {
