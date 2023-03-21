@@ -5,6 +5,8 @@
 #include <string.h>
 #include "cof3.h"
 
+#define RATIO 0.06
+
 int getargs(int argc, char **argv, char **input);
 int command_parse(struct Node *node, int volume);
 
@@ -37,7 +39,6 @@ main(int argc, char **argv)
 	}
 
 	cof3_parse(coffee_config, commands);
-	list_output(commands);
     command_parse(commands, 500);
 	list_destroy(commands);
 	fclose(coffee_config);
@@ -69,12 +70,37 @@ getargs(int argc, char **argv, char **input)
 int
 command_parse(struct Node *node, int volume)
 {
+    int coffee_grams = volume * RATIO;
+
     struct Node **head = &node;
     while (*head != NULL) {
         if (strcmp((*head)->data, "*Wait") == 0) {
             list_increment(head);
-            printf("Wait %i seconds\n", atoi((*head)->data));
+            printf("Wait %i seconds\n\n", atoi((*head)->data));
+
+        } else if (strcmp((*head)->data, "*Bloom") == 0) {
+            list_increment(head);
+            int tmp = atoi((*head)->data) * volume / 100;
+            printf("Bloom for %ig\n\n", tmp);
+
+        } else if (strcmp((*head)->data, "*Pour") == 0) {
+            list_increment(head);
+            int tmp = atoi((*head)->data) * volume / 100;
+            printf("Pour %ig of water\n\n", tmp);
+
+        } else if (strcmp((*head)->data, "*Swirl") == 0) {
+            list_increment(head);
+            printf("Swirl the brewer\n\n");
+
+        } else if (strcmp((*head)->data, "*Draw") == 0) {
+            list_increment(head);
+            printf("Let the water draw down\n\n");
+
+        } else if ((*head)->data[0] == '#') {
+            printf("%s\n\n", (*head)->data);
+            printf("Grams of coffee required %d\n\n", coffee_grams);
         }
+
         list_increment(head);
     }
     return 0;

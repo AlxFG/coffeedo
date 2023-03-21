@@ -40,11 +40,9 @@ cof3_parse(FILE *input, struct Node *cof3list)
 void
 str_parselist(struct Node *node,  char *string, size_t strsize)
 {
+    list_add(node, &string);
 	for (int i = 0; i != (strsize - 1); i++) {
-        if (i == 0) {
-            list_add(node, &string);
-
-        } else if (string[i] == '\0') {
+        if (string[i] == '\0') {
 			char *tmp = &string[i + 1];
 			list_add(node, &tmp);
 		}
