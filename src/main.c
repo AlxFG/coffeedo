@@ -39,7 +39,9 @@ main(int argc, char **argv)
 	}
 
 	cof3_parse(coffee_config, commands);
-    command_parse(commands, 250);
+
+    int volume = atoi(argv[optind]);
+    command_parse(commands, volume);
 	list_destroy(commands);
 	fclose(coffee_config);
 	return 0;
@@ -50,20 +52,16 @@ getargs(int argc, char **argv, char **input)
 {
 	int opt;
 
-	while ((opt = getopt(argc, argv, ":if:i")) != -1) {
+	while ((opt = getopt(argc, argv, "i:")) != -1) {
 		switch(opt) {
 			case 'i':
+                *input = optarg;
 				break;
-			case ':':
-				printf("arguments need value");
-				return 1;
-			case '?':
-				printf("%c invalid argument\n",opt);
-				return 1;
+            default:
+                fprintf(stderr, "unknown argument %c\n", opt);
+                return 1;
 		}
 	}
-
-	*input = argv[optind];
 	return 0;
 }
 
