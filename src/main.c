@@ -3,12 +3,14 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <string.h>
+#include <ctype.h>
 #include "cof3.h"
 
 #define RATIO 0.06
 
 int getargs(int argc, char **argv, char **input);
 int command_parse(struct Node *node, int volume);
+int verify_number(char **string);
 
 int
 main(int argc, char **argv)
@@ -79,15 +81,24 @@ command_parse(struct Node *node, int volume)
     while (*head != NULL) {
         if (strcmp((*head)->data, "*Wait") == 0) {
             list_increment(head);
+            if(verify_number(&(*head)->data)) {
+                return 1;
+            }
             printf("Wait %i seconds\n\n", atoi((*head)->data));
 
         } else if (strcmp((*head)->data, "*Bloom") == 0) {
             list_increment(head);
+            if(verify_number(&(*head)->data)) {
+                return 1;
+            }
             int tmp = atoi((*head)->data) * volume / 100;
             printf("Bloom for %ig\n\n", tmp);
 
         } else if (strcmp((*head)->data, "*Pour") == 0) {
             list_increment(head);
+            if(verify_number(&(*head)->data)) {
+                return 1;
+            }
             int tmp = atoi((*head)->data) * volume / 100;
             printf("Pour %ig of water\n\n", tmp);
 
@@ -108,3 +119,17 @@ command_parse(struct Node *node, int volume)
     }
     return 0;
 }
+
+int
+verify_number(char **string)
+{
+    printf("debug string: %s\n", *string);
+    for (int i = 0; i < strlen(*string); i++) {
+        if (isdigit((*string)[i]) == 0) {
+            fprintf(stderr, "Invalid keyword %s\n", *string);
+            return 1;
+        }
+    }
+    return 0;
+}
+
