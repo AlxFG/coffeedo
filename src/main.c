@@ -6,7 +6,7 @@
 #include <ctype.h>
 #include "cof3.h"
 
-#define RATIO 0.06
+#define RATIO 0.06 /* grams of coffee per ml of water */
 
 int getargs(int argc, char **argv, char **input);
 int command_parse(struct Node *node, int volume);
@@ -121,6 +121,9 @@ command_parse(struct Node *node, int volume)
     return 0;
 }
 
+/*
+ * checks if string is a number
+ */
 int
 verify_number(char **string)
 {
