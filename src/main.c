@@ -15,8 +15,8 @@ int verify_number(char **string);
 int
 main(int argc, char **argv)
 {
-	if (argc < 2) {
-		printf("usage ./coffeedo volume or usage ./coffeedo -i file volume\n");
+	if (argc < 4) {
+		printf("usage ./coffeedo -i file volume\n");
 		return 1;
 	}
 
@@ -28,15 +28,16 @@ main(int argc, char **argv)
 
 	FILE *coffee_config = fopen(input, "r");
 
-	if (coffee_config == NULL) {
+	if (!coffee_config) {
 		fprintf(stderr, "File could not be opened\n");
 		return 1;
 	}
 
 	struct Node *commands = calloc(1, sizeof(struct Node));
 
-	if (commands == NULL) {
+	if (!commands) {
 		fprintf(stderr, "Failed to allocate memeory\n");
+        fclose(coffee_config);
 		return 1;
 	}
 
@@ -123,9 +124,8 @@ command_parse(struct Node *node, int volume)
 int
 verify_number(char **string)
 {
-    printf("debug string: %s\n", *string);
     for (int i = 0; i < strlen(*string); i++) {
-        if (isdigit((*string)[i]) == 0) {
+    if (!isdigit((*string)[i])) {
             fprintf(stderr, "Invalid keyword %s\n", *string);
             return 1;
         }
