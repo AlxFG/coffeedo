@@ -12,11 +12,11 @@ struct Node {
 	char *data;
 };
 
-void list_init(struct Node *node, char **string);
+int list_init(struct Node *node, char **string);
 void list_destroy(struct Node *node);
 void list_output(struct Node *node);
 void list_add(struct Node *node, char **string);
-void list_addheader(FILE *input, struct Node *node);
+int list_addheader(FILE *input, struct Node *node);
 void str_null(char *string);
 char *str_process(FILE *input);
 void str_parselist(struct Node *node,  char *string, size_t strsize);
@@ -32,7 +32,9 @@ cof3_parse(FILE *input, struct Node *cof3list)
 	char *buffer = NULL;
 	size_t strsize;
 
-	list_addheader(input, cof3list);
+	if (list_addheader(input, cof3list)) {
+		return 1;
+	}
 	buffer = str_process(input);
 	strsize = strlen(buffer);
 	str_null(buffer);
@@ -63,8 +65,11 @@ char *
 str_process(FILE *input)
 {
 	char *buffer = calloc(1024, sizeof(char));
+	if (!buffer) {
+		return NULL;
+	}
 	char curr, prev;
-    curr = prev = '\0';
+	curr = prev = '\0';
 	int i;
 	for (i = 0; (curr = fgetc(input)) != EOF; i++) {
 		if (curr != '\n') {
@@ -97,12 +102,16 @@ str_null(char *string)
 /*
  * adds first element to linked list
  */
-void
+int
 list_init(struct Node *node, char **string)
 {
 	node->data = calloc(strlen(*string) + 1, sizeof(char));
+	if (!(node->data)) {
+		return 1;
+	}
 	node->next = NULL;
 	strcpy(node->data, *string);
+	return 0;
 }
 
 void
@@ -149,14 +158,20 @@ list_output(struct Node *node)
 /*
  * adds header to linked list
  */
-void
+int
 list_addheader(FILE *input, struct Node *node)
 {
 	char *header = calloc(50, sizeof(char));
+	if (!header) {
+		return 1;
+	}
 	fgets(header, MAXHEADER, input);
 	header[strcspn(header, "\n")] = '\0';
-	list_init(node, &header);
+	if (list_init(node, &header)) {
+		return 1;
+	}
 	free(header);
+	return 0;
 }
 
 /*

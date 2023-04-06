@@ -41,7 +41,10 @@ main(int argc, char **argv)
 		return 1;
 	}
 
-	cof3_parse(coffee_config, commands);
+	if (cof3_parse(coffee_config, commands)) {
+		fprintf(stderr, "failed parsing cof3 file\n");
+		return 1;
+	}
 
     int volume = atoi(argv[optind]);
     command_parse(commands, volume);
