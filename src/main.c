@@ -46,8 +46,8 @@ main(int argc, char **argv)
 		return 1;
 	}
 
-    int volume = atoi(argv[optind]);
-    command_parse(commands, volume);
+	int volume = atoi(argv[optind]);
+	command_parse(commands, volume);
 	list_destroy(commands);
 	fclose(coffee_config);
 	return 0;
